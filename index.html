@@ -3,295 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vui Hội Trung Thu - THACO AUTO Bắc Ninh</title>
+    <title>Mini Game Trung Thu - THACO AUTO Bắc Ninh</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
         body {
-            font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top right, #1e1b4b, #0f0c29, #000000);
-            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
-            color: #ffffff;
+            position: relative;
         }
 
-        .title-font {
-            font-family: 'Dancing Script', cursive;
+        /* Glassmorphism form */
+        .glass-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* Glassmorphism for Form */
-        .glass-panel {
-            background: rgba(20, 20, 35, 0.65);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        /* Input styling for high contrast */
+        .input-field {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1e1b4b;
+            border: 2px solid #fbbf24;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 10px #fbbf24;
+            border-color: #f59e0b;
         }
 
-        /* Animations */
-        @keyframes swing {
-            0% { transform: rotate(5deg); }
-            50% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
+        /* CSS Animations */
         @keyframes twinkle {
             0%, 100% { opacity: 0.2; transform: scale(0.8); }
             50% { opacity: 1; transform: scale(1.2); }
         }
-
-        .lantern-container {
-            position: absolute;
-            top: -10px;
-            transform-origin: top center;
-            animation: swing 4s ease-in-out infinite;
-            z-index: 0;
-            filter: drop-shadow(0 0 15px rgba(255, 100, 0, 0.6));
+        @keyframes swing {
+            0% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+            100% { transform: rotate(-10deg); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .sticker {
-            position: absolute;
-            animation: float 6s ease-in-out infinite;
-            z-index: 0;
-            font-size: 3rem;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
-            user-select: none;
-            pointer-events: none;
-        }
-
-        .star {
-            position: absolute;
-            color: #FFD700;
-            animation: twinkle 3s ease-in-out infinite;
-            user-select: none;
-            pointer-events: none;
-        }
-
-        /* Form Inputs */
-        .input-dark {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            transition: all 0.3s ease;
-        }
+        .anim-star { animation: twinkle 3s infinite ease-in-out; }
+        .anim-star:nth-child(even) { animation-duration: 2s; }
+        .anim-lantern { animation: swing 4s infinite ease-in-out; transform-origin: top center; }
+        .anim-sticker { animation: float 6s infinite ease-in-out; }
         
-        .input-dark:focus {
-            background: rgba(0, 0, 0, 0.6);
-            border-color: #FFD700;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-            outline: none;
-        }
-
-        .input-dark::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Dropdown specific */
-        select.input-dark option {
-            background: #1e1b4b;
-            color: #ffffff;
-        }
-
-        /* Glowing Button */
-        .btn-glow {
-            background: linear-gradient(135deg, #FFD700, #FF8C00);
-            color: #4a1c00;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            transition: all 0.3s ease;
-        }
-        .btn-glow:hover {
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
-            transform: translateY(-2px);
-        }
+        .modal-animate { animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
-<body class="relative flex items-center justify-center py-10 px-4">
+<body class="min-h-screen flex items-center justify-center p-4">
 
-    <!-- Moon -->
-    <div class="absolute top-10 right-10 md:top-20 md:right-32 text-6xl md:text-8xl" style="filter: drop-shadow(0 0 40px rgba(255,255,200,0.8)); pointer-events: none; z-index: 0;">
-        🌕
-    </div>
-
-    <!-- Stars -->
-    <div class="star text-xl top-20 left-[10%] animation-delay-1000">✨</div>
-    <div class="star text-2xl top-40 right-[20%] animation-delay-2000">✨</div>
-    <div class="star text-lg bottom-32 left-[20%] animation-delay-500">✨</div>
-    <div class="star text-xl bottom-40 right-[15%] animation-delay-1500">✨</div>
-
-    <!-- Lanterns -->
-    <div class="lantern-container left-[5%] md:left-[15%] text-5xl md:text-7xl">🏮</div>
-    <div class="lantern-container right-[5%] md:right-[15%] text-5xl md:text-7xl" style="animation-delay: -2s;">🏮</div>
+    <!-- Background Elements (Stars) -->
+    <div class="fixed top-10 left-10 text-yellow-300 text-2xl anim-star pointer-events-none">✨</div>
+    <div class="fixed top-20 right-20 text-yellow-300 text-3xl anim-star pointer-events-none">✨</div>
+    <div class="fixed bottom-20 left-1/4 text-yellow-300 text-xl anim-star pointer-events-none">✨</div>
+    <div class="fixed top-1/3 right-10 text-yellow-300 text-2xl anim-star pointer-events-none">✨</div>
 
     <!-- Floating Stickers -->
-    <div class="sticker bottom-20 left-[5%] md:left-[20%] text-6xl">🐇</div>
-    <div class="sticker top-32 left-[2%] md:left-[10%] text-5xl" style="animation-delay: -1s;">☁️</div>
-    <div class="sticker bottom-32 right-[2%] md:right-[10%] text-5xl" style="animation-delay: -3s;">🥮</div>
+    <div class="fixed top-10 right-4 text-5xl anim-sticker pointer-events-none" style="animation-delay: 1s;">🌕</div>
+    <div class="fixed bottom-10 left-4 text-4xl anim-sticker pointer-events-none" style="animation-delay: 2s;">🐰</div>
+    <div class="fixed bottom-32 right-10 text-4xl anim-sticker pointer-events-none" style="animation-delay: 0.5s;">🥮</div>
+    <div class="fixed top-1/4 left-5 text-4xl anim-sticker pointer-events-none" style="animation-delay: 1.5s;">☁️</div>
 
-    <div class="w-full max-w-lg z-10">
-        <div class="glass-panel rounded-3xl p-6 sm:p-8">
-            
-            <!-- Logo & Header -->
-            <div class="text-center mb-8">
-                <!-- EXACT LOGO TAG PROVIDED -->
-                <img src="image_127295.png" alt="THACO AUTO Bắc Ninh" style="max-width:250px; display:block; margin: 0 auto; background: white; padding: 10px; border-radius: 10px; margin-bottom: 20px;">
-                
-                <h1 class="title-font text-5xl text-yellow-400 mb-2 drop-shadow-md">Vui Hội Trung Thu</h1>
-                <p class="text-gray-200 font-medium text-lg">Tại Công viên FDI</p>
-                <div class="w-24 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent mx-auto mt-4"></div>
-                <p class="text-gray-300 text-sm mt-4">Điền thông tin bên dưới để tham gia Minigame và nhận quà hấp dẫn!</p>
+    <!-- Lanterns -->
+    <div class="fixed -top-2 left-1/4 text-5xl anim-lantern pointer-events-none">🏮</div>
+    <div class="fixed -top-2 right-1/4 text-5xl anim-lantern pointer-events-none" style="animation-delay: 1s;">🏮</div>
+
+    <!-- Main Form Container -->
+    <div class="glass-form rounded-2xl p-6 md:p-8 w-full max-w-md relative z-10">
+        
+        <!-- THACO AUTO Logo (Updated filename) -->
+        <img src="Asset 6thaco auto.png" alt="THACO AUTO Bắc Ninh" class="w-full max-w-[250px] mx-auto bg-white p-2 rounded-lg mb-6">
+        
+        <div class="text-center mb-6">
+            <h1 class="text-3xl font-bold text-yellow-400 mb-2 uppercase drop-shadow-md">Vui Hội Trăng Rằm</h1>
+            <p class="text-white text-sm">Điền thông tin tham gia Minigame cùng THACO AUTO Bắc Ninh tại Công viên FDI</p>
+        </div>
+
+        <form id="minigameForm" class="space-y-4">
+            <!-- Họ và tên -->
+            <div>
+                <label class="block text-yellow-400 font-bold mb-1 ml-1" for="fullname">Họ và tên *</label>
+                <input type="text" id="fullname" required placeholder="Nhập họ và tên của bạn" 
+                    class="input-field w-full px-4 py-3 rounded-xl font-medium">
             </div>
 
-            <form id="minigameForm" class="space-y-5" onsubmit="submitForm(event)">
-                
-                <!-- Họ và tên -->
-                <div>
-                    <label for="fullname" class="block text-sm font-bold text-yellow-400 mb-1">Họ và tên <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-user text-yellow-500/70"></i>
-                        </div>
-                        <input type="text" id="fullname" name="fullname" required placeholder="Nhập họ và tên của bạn"
-                            class="input-dark block w-full pl-11 pr-4 py-3 rounded-xl text-base">
-                    </div>
-                </div>
+            <!-- Số điện thoại -->
+            <div>
+                <label class="block text-yellow-400 font-bold mb-1 ml-1" for="phone">Số điện thoại *</label>
+                <input type="tel" id="phone" required placeholder="Nhập số điện thoại" pattern="[0-9]{10}"
+                    class="input-field w-full px-4 py-3 rounded-xl font-medium">
+            </div>
 
-                <!-- Số điện thoại -->
-                <div>
-                    <label for="phone" class="block text-sm font-bold text-yellow-400 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-phone-alt text-yellow-500/70"></i>
-                        </div>
-                        <input type="tel" id="phone" name="phone" required placeholder="09xx xxx xxx" pattern="[0-9]{10,11}" title="Vui lòng nhập số điện thoại hợp lệ"
-                            class="input-dark block w-full pl-11 pr-4 py-3 rounded-xl text-base">
-                    </div>
-                </div>
+            <!-- Địa chỉ -->
+            <div>
+                <label class="block text-yellow-400 font-bold mb-1 ml-1" for="address">Địa chỉ *</label>
+                <input type="text" id="address" required placeholder="Nhập địa chỉ của bạn" 
+                    class="input-field w-full px-4 py-3 rounded-xl font-medium">
+            </div>
 
-                <!-- Địa chỉ -->
-                <div>
-                    <label for="address" class="block text-sm font-bold text-yellow-400 mb-1">Địa chỉ <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-map-marker-alt text-yellow-500/70"></i>
-                        </div>
-                        <input type="text" id="address" name="address" required placeholder="Nhập địa chỉ hiện tại"
-                            class="input-dark block w-full pl-11 pr-4 py-3 rounded-xl text-base">
-                    </div>
-                </div>
+            <!-- CCCD (Không bắt buộc) -->
+            <div>
+                <label class="block text-yellow-400 font-bold mb-1 ml-1" for="cccd">Mã CCCD <span class="text-gray-300 font-normal text-sm">(Không bắt buộc)</span></label>
+                <input type="text" id="cccd" placeholder="Nhập số CCCD" 
+                    class="input-field w-full px-4 py-3 rounded-xl font-medium">
+            </div>
 
-                <!-- Mã CCCD -->
-                <div>
-                    <label for="cccd" class="block text-sm font-bold text-yellow-400 mb-1">Mã CCCD <span class="text-gray-400 font-normal text-xs ml-1">(Không bắt buộc)</span></label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <i class="fas fa-id-card text-yellow-500/70"></i>
-                        </div>
-                        <input type="text" id="cccd" name="cccd" placeholder="Số Căn cước công dân"
-                            class="input-dark block w-full pl-11 pr-4 py-3 rounded-xl text-base">
-                    </div>
-                </div>
+            <!-- Dòng xe quan tâm -->
+            <div>
+                <label class="block text-yellow-400 font-bold mb-1 ml-1" for="car_model">Sản phẩm xe bạn có thể quan tâm *</label>
+                <select id="car_model" required class="input-field w-full px-4 py-3 rounded-xl font-medium appearance-none">
+                    <option value="" disabled selected>-- Chọn dòng xe --</option>
+                    <option value="Mazda2">Mazda2</option>
+                    <option value="Mazda CX-5">Mazda CX-5</option>
+                    <option value="Peugeot 2008">Peugeot 2008</option>
+                    <option value="Peugeot 3008">Peugeot 3008</option>
+                    <option value="BMW 3 Series">BMW 3 Series</option>
+                    <option value="BMW X3">BMW X3</option>
+                </select>
+            </div>
 
-                <!-- Dropdown Xe -->
-                <div>
-                    <label for="carModel" class="block text-sm font-bold text-yellow-400 mb-1">Sản phẩm xe mà bạn có thể quan tâm <span class="text-red-500">*</span></label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                            <i class="fas fa-car-side text-yellow-500/70"></i>
-                        </div>
-                        <select id="carModel" name="carModel" required
-                            class="input-dark block w-full pl-11 pr-10 py-3 rounded-xl text-base appearance-none cursor-pointer">
-                            <option value="" disabled selected>-- Vui lòng chọn dòng xe --</option>
-                            <option value="Mazda2">Mazda2</option>
-                            <option value="Mazda CX-5">Mazda CX-5</option>
-                            <option value="Peugeot 2008">Peugeot 2008</option>
-                            <option value="Peugeot 3008">Peugeot 3008</option>
-                            <option value="BMW 3 Series">BMW 3 Series</option>
-                            <option value="BMW X3">BMW X3</option>
-                        </select>
-                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                            <i class="fas fa-chevron-down text-yellow-500"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pt-4">
-                    <button type="submit" class="btn-glow w-full py-4 rounded-xl text-lg font-bold uppercase tracking-wider flex items-center justify-center gap-2">
-                        <span>Gửi thông tin tham gia</span>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+            <!-- Nút Submit -->
+            <button type="submit" 
+                class="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white font-bold py-4 rounded-xl text-lg uppercase shadow-lg transform transition hover:scale-105 active:scale-95 mt-4">
+                Đăng ký tham gia ngay 🚀
+            </button>
+        </form>
     </div>
 
     <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex-col items-center justify-center p-4">
-        <div class="bg-gradient-to-br from-indigo-900 to-purple-900 border-2 border-yellow-400 rounded-3xl p-8 max-w-md w-full text-center relative overflow-hidden shadow-[0_0_50px_rgba(255,215,0,0.3)] transform transition-all scale-100">
-            <!-- Decorative Modal Elements -->
-            <div class="absolute -top-10 -right-10 text-8xl opacity-30">🌕</div>
-            <div class="absolute bottom-2 left-2 text-4xl">🏮</div>
-            <div class="absolute bottom-2 right-2 text-4xl">🐇</div>
-
-            <div class="relative z-10">
-                <div class="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/50">
-                    <i class="fas fa-check text-5xl text-white"></i>
-                </div>
-                
-                <h2 class="title-font text-4xl text-yellow-400 mb-4 font-bold">Đăng ký thành công!</h2>
-                
-                <div class="bg-black/40 border border-yellow-400/30 rounded-xl p-5 mb-6">
-                    <p class="text-white text-lg leading-relaxed">
-                        Vui lòng đưa màn hình này cho <span class="text-yellow-400 font-bold">nhân viên</span> để xác nhận và tham gia minigame nhé!
-                    </p>
-                </div>
-
-                <button onclick="closeModal()" class="btn-glow w-full py-3 rounded-xl text-base font-bold uppercase">
-                    Đóng
-                </button>
-            </div>
+    <div id="successModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl" id="modalContent">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-2xl font-bold text-red-600 mb-2 uppercase">Đăng ký thành công!</h2>
+            <p class="text-gray-700 font-medium text-lg mb-6 leading-relaxed">
+                Vui lòng đưa màn hình này cho nhân viên để xác nhận và tham gia minigame nhé! 🎁
+            </p>
+            <button onclick="closeModal()" 
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                Đóng
+            </button>
         </div>
     </div>
 
     <script>
-        function submitForm(event) {
-            // Prevent actual form submission to server
-            event.preventDefault();
+        document.getElementById('minigameForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Show modal
+            const modal = document.getElementById('successModal');
+            const modalContent = document.getElementById('modalContent');
             
-            // Basic check if form is valid (HTML5 validation handles the required fields)
-            const form = document.getElementById('minigameForm');
-            if (form.checkValidity()) {
-                // Show the modal
-                const modal = document.getElementById('successModal');
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                
-                // Add a small pop animation
-                const modalContent = modal.querySelector('div');
-                modalContent.animate([
-                    { transform: 'scale(0.8)', opacity: 0 },
-                    { transform: 'scale(1.05)', opacity: 1 },
-                    { transform: 'scale(1)', opacity: 1 }
-                ], {
-                    duration: 400,
-                    easing: 'ease-out'
-                });
-            }
-        }
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            modalContent.classList.add('modal-animate');
+        });
 
         function closeModal() {
             const modal = document.getElementById('successModal');
+            const modalContent = document.getElementById('modalContent');
+            
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            modalContent.classList.remove('modal-animate');
             
-            // Optional: reset form after closing
+            // Reset form
             document.getElementById('minigameForm').reset();
         }
     </script>
