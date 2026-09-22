@@ -141,8 +141,8 @@
     </div>
 
     <script>
-        // Link Apps Script
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbxs5BvFSkso4cyKoaiOzcjnmWfQUi-J1RcCvMY0hUun/exec';
+        // Link Apps Script bạn vừa cung cấp
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbznProbM_lLmZ0uPeq3lrxrjkVX-2k0ZzdGnKk372cQ4sCBOCM9hv9Rxy0h_jexnKpHAA/exec';
         
         const form = document.getElementById('minigameForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -151,35 +151,32 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // Hiện trạng thái đang gửi
             submitBtn.disabled = true;
             submitBtn.querySelector('span').innerText = 'Đang xử lý...';
             spinner.classList.remove('hidden');
 
-            // Định dạng dữ liệu chuẩn nhất để đẩy lên Google Sheets
+            // Đóng gói dữ liệu thành đường link GET an toàn tuyệt đối
             const formData = new FormData(form);
-            const data = new URLSearchParams(formData);
+            const params = new URLSearchParams(formData).toString();
+            const finalURL = scriptURL + "?" + params;
 
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: data, 
-                mode: 'no-cors' 
-            })
+            // Sử dụng GET + no-cors
+            fetch(finalURL, { method: 'GET', mode: 'no-cors' })
             .then(response => {
-                // Hiện Modal thành công
+                // Hiển thị modal thành công
                 const modal = document.getElementById('successModal');
                 const modalContent = document.getElementById('modalContent');
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
                 modalContent.classList.add('modal-animate');
                 
-                // Khôi phục nút
                 submitBtn.disabled = false;
                 submitBtn.querySelector('span').innerText = 'Đăng ký tham gia ngay 🚀';
                 spinner.classList.add('hidden');
             })
             .catch(error => {
-                alert('Lỗi kết nối! Vui lòng thử lại.');
+                // Xử lý lỗi
+                alert('Lỗi mạng! Vui lòng thử lại.');
                 submitBtn.disabled = false;
                 submitBtn.querySelector('span').innerText = 'Đăng ký tham gia ngay 🚀';
                 spinner.classList.add('hidden');
@@ -193,8 +190,7 @@
             modal.classList.add('hidden');
             modal.classList.remove('flex');
             modalContent.classList.remove('modal-animate');
-            
-            // Làm sạch form
+            // Xóa rỗng form sau khi đóng
             document.getElementById('minigameForm').reset();
         }
     </script>
