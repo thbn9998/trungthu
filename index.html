@@ -141,9 +141,8 @@
             </button>
         </div>
     </div>
-
     <script>
-        // Link Apps Script của bạn đã được gắn vào đây:
+        // Link Apps Script của bạn
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwB1I3a7gYNw_fcr0nSz6FJk7sCASO9Tqj5IwJZXeH6AYlvTLq6UCF-gATA1sq4oKlE/exec';
         
         const form = document.getElementById('minigameForm');
@@ -158,26 +157,35 @@
             submitBtn.querySelector('span').innerText = 'Đang xử lý...';
             spinner.classList.remove('hidden');
 
-            fetch(scriptURL, { method: 'POST', body: new FormData(form), mode: 'no-cors' })
-                .then(response => {
-                    // Hiện Modal thành công
-                    const modal = document.getElementById('successModal');
-                    const modalContent = document.getElementById('modalContent');
-                    modal.classList.remove('hidden');
-                    modal.classList.add('flex');
-                    modalContent.classList.add('modal-animate');
-                    
-                    // Khôi phục nút
-                    submitBtn.disabled = false;
-                    submitBtn.querySelector('span').innerText = 'Đăng ký tham gia ngay 🚀';
-                    spinner.classList.add('hidden');
-                })
-                .catch(error => {
-                    alert('Lỗi mạng! Vui lòng thử lại.');
-                    submitBtn.disabled = false;
-                    submitBtn.querySelector('span').innerText = 'Đăng ký tham gia ngay 🚀';
-                    spinner.classList.add('hidden');
-                });
+            // Chuyển đổi dữ liệu form sang định dạng chuẩn URLSearchParams để Google Sheets dễ đọc nhất
+            const formData = new FormData(form);
+            const data = new URLSearchParams(formData);
+
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: data, 
+                // mode: 'no-cors' giúp gửi đi mà không bị lỗi bảo mật tên miền
+                mode: 'no-cors' 
+            })
+            .then(response => {
+                // Hiện Modal thành công
+                const modal = document.getElementById('successModal');
+                const modalContent = document.getElementById('modalContent');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                modalContent.classList.add('modal-animate');
+                
+                // Khôi phục nút
+                submitBtn.disabled = false;
+                submitBtn.querySelector('span').innerText = 'Đăng ký tham gia ngay 🚀';
+                spinner.classList.add('hidden');
+            })
+            .catch(error => {
+                alert('Lỗi mạng! Vui lòng thử lại.');
+                submitBtn.disabled = false;
+                submitBtn.querySelector('span').innerText = 'Đăng ký tham gia ngay 🚀';
+                spinner.classList.add('hidden');
+            });
         });
 
         function closeModal() {
